@@ -48,7 +48,7 @@ const lethargy = new Lethargy({
 });
 ```
 
-> 😉 If you found optimizations for the defaults, please share it in this [ticket](https://github.com/d4nyll/lethargy/issues/2)!
+> 😉 If you found optimizations for the defaults, please share them in this [ticket](https://github.com/d4nyll/lethargy/issues/2)!
 
 Bind the wheel event and pass the event to `Lethargy`:
 
@@ -74,23 +74,23 @@ All options are optional:
 
 - `stability` - Specifies the length of the rolling average. In effect, the larger the value, the smoother the curve will be. This attempts to prevent anomalies from firing 'real' events. Valid values are all positive integers, but in most cases, you would need to stay between `5` and around `30`.
 
-- `sensitivity` - Specifies the minimum value for `wheelDelta` for it to register as a valid scroll event. Because the tail of the curve have low `wheelDelta` values, this will stop them from registering as valid scroll events. The unofficial standard `wheelDelta` is `120`, so valid values are positive integers below `120`.
+- `sensitivity` - Specifies the minimum value for `wheelDelta` for it to register as a valid scroll event. Because the tail of the curve has low `wheelDelta` values, this will stop them from registering as valid scroll events. The unofficial standard `wheelDelta` is `120`, so valid values are positive integers below `120`.
 
 - `tolerance` - Prevent small fluctuations from affecting results. Valid values are decimals from `0`, but should ideally be between `0.05` and `0.3`.
 
-- `delay` - Threshold for the amount of time between mousewheel events for them to be deemed separate.
+- `delay` - Threshold for the amount of time between mouse wheel events for them to be deemed separate.
 
 ## What problem does it solve?
 
-Scroll plugins such as [smartscroll](https://github.com/d4nyll/smartscroll), [jquery-mousewheel](https://github.com/jquery/jquery-mousewheel) or [fullPage.js](http://alvarotrigo.com/fullPage/) work by detecting scroll events and then doing something with them, such as scroll to the next frame. However, inertial scrolling continues to emit scroll events even after the user stopped, and this can often lead to problems, such as scrolling two to three frames when the user only scrolled once.
+Scroll plugins such as [smartscroll](https://github.com/d4nyll/smartscroll), [jquery-mousewheel](https://github.com/jquery/jquery-mousewheel), or [fullPage.js](http://alvarotrigo.com/fullPage/) work by detecting scroll events and then doing something with them, such as scroll to the next frame. However, inertial scrolling continues to emit scroll events even after the user stopped, and this can often lead to problems, such as scrolling two to three frames when the user only scrolled once.
 
 ### How does it work?
 
-Lethargy keeps a record of the last few `wheelDelta` values that is passed through it, it will then work out whether these values are decreasing (decaying), and if so, concludes that the scroll event originated from inertial scrolling, and not directly from the user.
+Lethargy keeps a record of the last few `wheelDelta` values that are passed through it, it will then work out whether these values are decreasing (decaying), and if so, concludes that the scroll event originated from inertial scrolling, and not directly from the user.
 
 ### Limitations
 
-Not all trackpads work the same, some trackpads do not have a decaying `wheelDelta` value, and so our method of decay detection would not work. Instead, to cater for this situation, we had to, grudgingly, set a very small time delay between when events will register. We have tested this and for normal use does not affect user experience more than usual.
+Not all trackpads work the same, some trackpads do not have a decaying `wheelDelta` value, so our method of decay detection would not work. Instead, to cater to this situation, we had to, grudgingly, set a very small time delay between when events will register. We have tested this and normal use does not affect user experience more than usual.
 
 ## TypeScript
 
@@ -98,7 +98,7 @@ The module is written in TypeScript and type definitions are included.
 
 ## Contributing
 
-Contributions, issues and feature requests are welcome!
+Contributions, issues, and feature requests are welcome!
 
 ## Show your support
 
