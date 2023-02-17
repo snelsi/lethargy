@@ -553,6 +553,11 @@ json5@^2.2.2:
   resolved "https://registry.yarnpkg.com/json5/-/json5-2.2.3.tgz#78cd6f1a19bdc12b73db5ad0c61efd66c1e29283"
   integrity sha512-XmOWe7eyHYH14cLdVPoyg+GOH3rYX++KpzrylJwSW98t3Nk+U8XOl8FWKOgwtzdb8lXGf6zYwDUzeHMWfxasyg==
 
+lethargy-ts@latest:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/lethargy-ts/-/lethargy-ts-0.0.1.tgz#c0f1ad8f17e0e5a8a975062d8c2e6d7cfb793636"
+  integrity sha512-+YY+Z0YSJmN5mvNzYdxY1XgL3oSe2HWnD/+Y2U0vGruUe0HpOzXcIKXzbIpo0wQhMfcjxiYfKros8pVuBoP6qw==
+
 loose-envify@^1.1.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/loose-envify/-/loose-envify-1.4.0.tgz#71ee51fa7be4caec1a63839f7e682d8132d30caf"

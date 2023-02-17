@@ -1,6 +1,6 @@
 import React from "react";
 
-export const states = ["initial", "intentional", "inertial"];
+export const states = ["initial", "intentional", "inertial"] as const;
 
 export type State = (typeof states)[number];
 
