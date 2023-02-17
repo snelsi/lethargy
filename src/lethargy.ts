@@ -21,7 +21,7 @@ export class Lethargy {
   private lastDeltas: Record<ScrollDirection, number[]>;
   private deltasTimestamp: (number | null)[];
 
-  constructor({ stability = 8, sensitivity = 100, tolerance = 1.1, delay = 150 } = {}) {
+  constructor({ stability = 8, sensitivity = 100, tolerance = 0.1, delay = 150 } = {}) {
     this.stability = stability;
     this.sensitivity = sensitivity;
     this.tolerance = tolerance;
@@ -78,7 +78,7 @@ export class Lethargy {
     const oldAverage = getAverage(oldDeltas);
     const newAverage = getAverage(newDeltas);
 
-    const newAverageIsHigher = Math.abs(newAverage * this.tolerance) > Math.abs(oldAverage);
+    const newAverageIsHigher = Math.abs(newAverage * (1 + this.tolerance)) > Math.abs(oldAverage);
     const matchesSensitivity = Math.abs(newAverage) > this.sensitivity;
 
     if (newAverageIsHigher && matchesSensitivity) {
