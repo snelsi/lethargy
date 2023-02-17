@@ -84,11 +84,11 @@ All options are optional:
 
 Scroll plugins such as [smartscroll](https://github.com/d4nyll/smartscroll), [jquery-mousewheel](https://github.com/jquery/jquery-mousewheel), or [fullPage.js](http://alvarotrigo.com/fullPage/) work by detecting scroll events and then doing something with them, such as scroll to the next frame. However, inertial scrolling continues to emit scroll events even after the user stopped, and this can often lead to problems, such as scrolling two to three frames when the user only scrolled once.
 
-### How does it work?
+## How does it work?
 
 Lethargy keeps a record of the last few `wheelDelta` values that are passed through it, it will then work out whether these values are decreasing (decaying), and if so, concludes that the scroll event originated from inertial scrolling, and not directly from the user.
 
-### Limitations
+## Limitations
 
 Not all trackpads work the same, some trackpads do not have a decaying `wheelDelta` value, so our method of decay detection would not work. Instead, to cater to this situation, we had to, grudgingly, set a very small time delay between when events will register. We have tested this and normal use does not affect user experience more than usual.
 
