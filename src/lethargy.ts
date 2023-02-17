@@ -49,16 +49,11 @@ export class Lethargy {
     this.deltasTimestamp.push(Date.now());
     this.deltasTimestamp.shift();
 
+    // Get the relevant deltas array
     const deltas = this.lastDeltas[scrollDirection];
 
     deltas.push(deltaModule);
     deltas.shift();
-    return this.isIntentional(scrollDirection);
-  }
-
-  private isIntentional(scrollDirection: ScrollDirection): boolean | null {
-    // Get the relevant deltas array
-    const deltas = this.lastDeltas[scrollDirection];
 
     // If the array is not filled up yet, we cannot compare averages, so assume the scroll event to be intentional
     if (deltas[0] == null) return true;
