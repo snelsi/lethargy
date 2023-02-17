@@ -1,24 +1,21 @@
 # Lethargy
-[![CDNJS](https://img.shields.io/cdnjs/v/lethargy.svg)](https://cdnjs.com/libraries/lethargy)
-[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fd4nyll%2Flethargy.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fd4nyll%2Flethargy?ref=badge_shield)
 
-Lethargy is a tiny (612b minified + gzipped) JavaScript library to help distinguish between scroll events initiated by the user, and those by inertial scrolling. Lethargy does ***not*** have external dependencies.
+[![CDNJS](https://img.shields.io/cdnjs/v/lethargy-ts.svg)](https://cdnjs.com/libraries/lethargy-ts)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fd4nyll%2Flethargy-ts.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fd4nyll%2Flethargy-ts?ref=badge_shield)
 
-Lethargy is used in [smartscroll](https://github.com/d4nyll/smartscroll), a jQuery scroll plugin, to resolve problems with inertial scrolling.
+Lethargy-ts is a tiny (612b minified + gzipped) JavaScript library to help distinguish between scroll events initiated by the user, and those by inertial scrolling. Lethargy does **_not_** have external dependencies.
 
 ### [Demo](http://d4nyll.github.io/lethargy/)
 
 ### Install
 
-Download `lethargy.js` or `lethargy.min.js`
-
-**Bower**
-
-    bower install lethargy
-
 **npm**
 
-    npm install lethargy
+    npm install lethargy-ts
+
+**yarn**
+
+    yarn add lethargy-ts
 
 ### Use
 
@@ -43,8 +40,7 @@ Bind the mousewheel or scroll events and pass the event to Lethargy.
         }
     });
 
-
-`lethargy.check(e)` will return `1` if it is a normal scroll *up* event, `-1` if it is a normal scroll *down* event, and `false` if it is initiated by inertial scrolling.
+`lethargy.check(e)` will return `1` if it is a normal scroll _up_ event, `-1` if it is a normal scroll _down_ event, and `false` if it is initiated by inertial scrolling.
 
 Lethargy focus on preventing false positives (saying it's a normal scroll event when it wasn't), but tolerates false negatives (saying it's not a normal scroll event when it is).
 
@@ -88,8 +84,6 @@ Below charts the `wheelDelta` values of each scroll action using this [Gist](htt
 
 ![MacBook Air Trackpad `wheelDelta` curve](http://blog.danyll.com/content/images/2015/05/air.png)
 
-As you can see, the Desktop Mouse emits small 
-
 ### How does it work?
 
 Lethargy keeps a record of the last few `wheelDelta` values that is passed through it, it will then work out whether these values are decreasing (decaying), and if so, concludes that the scroll event originated from inertial scrolling, and not directly from the user.
@@ -102,6 +96,6 @@ Not all trackpads work the same, some trackpads do not have a decaying `wheelDel
 
 ![ASUS Trackpad](http://blog.danyll.com/content/images/2015/05/asus.png)
 
-
 ## License
+
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fd4nyll%2Flethargy.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fd4nyll%2Flethargy?ref=badge_large)
