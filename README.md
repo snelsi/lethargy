@@ -47,7 +47,7 @@ const lethargy = new Lethargy({
 });
 ```
 
-> 😉 If you found optimizations for the defaults, please share them in this [ticket](https://github.com/d4nyll/lethargy/issues/2)!
+> 😉 If you found optimizations for the defaults, please share them in this [ticket](https://github.com/snelsi/lethargy-ts/issues/1)!
 
 Bind the wheel event and pass the event to `Lethargy`:
 
@@ -69,7 +69,7 @@ window.addEventListener("wheel", checkWheelEvent, { passive: true });
 
 ## Options
 
-All options are optional:
+All parameters are optional:
 
 - `sensitivity` - Specifies the minimum value for `wheelDelta` for it to register as a valid scroll event. Because the tail of the curve has low `wheelDelta` values, this will stop them from registering as valid scroll events.
 
