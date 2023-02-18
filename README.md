@@ -41,10 +41,9 @@ You can customize parameters to better match your application's needs:
 
 ```tsx
 const lethargy = new Lethargy({
-  stability: 8,
-  sensitivity: 100,
-  tolerance: 0.1,
-  delay: 150,
+  sensitivity: 20,
+  delay: 100,
+  inertiaDecay: 10,
 });
 ```
 
@@ -72,13 +71,11 @@ window.addEventListener("wheel", checkWheelEvent, { passive: true });
 
 All options are optional:
 
-- `stability` - Specifies the length of the rolling average. In effect, the larger the value, the smoother the curve will be. This attempts to prevent anomalies from firing 'real' events. Valid values are all positive integers, but in most cases, you would need to stay between `5` and around `30`.
-
-- `sensitivity` - Specifies the minimum value for `wheelDelta` for it to register as a valid scroll event. Because the tail of the curve has low `wheelDelta` values, this will stop them from registering as valid scroll events. The unofficial standard `wheelDelta` is `120`, so valid values are positive integers below `120`.
-
-- `tolerance` - Prevent small fluctuations from affecting results. Valid values are decimals from `0`, but should ideally be between `0.05` and `0.3`.
+- `sensitivity` - Specifies the minimum value for `wheelDelta` for it to register as a valid scroll event. Because the tail of the curve has low `wheelDelta` values, this will stop them from registering as valid scroll events.
 
 - `delay` - Threshold for the amount of time between mouse wheel events for them to be deemed separate.
+
+- `inertiaDecay` - Inertia event may be no more than this percents smaller that previous event.
 
 ## What problem does it solve?
 

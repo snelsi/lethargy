@@ -1,3 +1,4 @@
-export const scrollDirections = ["up", "down", "left", "right"] as const;
+/** [deltaX, deltaY, deltaZ] */
+export type Deltas = [number, number, number];
 
-export type ScrollDirection = (typeof scrollDirections)[number];
+export type IWheelEvent = Pick<WheelEvent, "deltaX" | "deltaY" | "deltaZ" | "timeStamp">;

@@ -1,35 +1,24 @@
-import {
-  generateDeltas,
-  getArrayOfNulls,
-  getAverage,
-  getBiggestDeltaModule,
-  getScrollDirection,
-} from "./utils";
-import type { ScrollDirection } from "./types";
+import { compareVectors, getBiggestDeltaModule, getWheelEvent, isAnomalyInertia } from "./utils";
+import type { IWheelEvent } from "./types";
 
 export class Lethargy {
-  /** Stability is how many records to use to calculate the average */
-  public stability: number;
   /** The wheelDelta threshold. If an event has a wheelDelta below this value, it will not register */
   public sensitivity: number;
-  /** How much the old rolling average have to differ from the new rolling average for it to be deemed significant */
-  public tolerance: number;
-  /** Threshold for the amount of time between mousewheel events for them to be deemed separate */
+  /** Threshold for the amount of time between wheel events for them to be deemed separate */
   public delay: number;
+  /** Max percentage decay speed of an Inertia event */
+  public inertiaDecay: number;
 
-  // Internall data
-  private lastDeltas: Record<ScrollDirection, number[]>;
-  private deltasTimestamp: (number | null)[];
+  /** [lastKnownHumanEvent, ...inertiaEvents] */
+  private previousEvents: IWheelEvent[];
 
-  constructor({ stability = 8, sensitivity = 100, tolerance = 0.1, delay = 150 } = {}) {
-    this.stability = stability;
-    this.sensitivity = sensitivity;
-    this.tolerance = tolerance;
-    this.delay = delay;
+  constructor({ sensitivity = 20, inertiaDecay = 10, delay = 100 } = {}) {
+    this.sensitivity = Math.max(1, sensitivity);
+    this.inertiaDecay = Math.max(1, inertiaDecay);
+    this.delay = Math.max(1, delay);
 
     // Reset inner state
-    this.lastDeltas = generateDeltas(this.stability * 2);
-    this.deltasTimestamp = getArrayOfNulls(this.stability * 2);
+    this.previousEvents = [];
   }
 
   /** Checks whether the mousewheel event is an intent */
@@ -39,50 +28,71 @@ export class Lethargy {
     // No event provided
     if (!isEvent) return null;
 
-    const scrollDirection = getScrollDirection(e);
-    const deltaModule = getBiggestDeltaModule(e);
+    const event = getWheelEvent(e);
 
-    // Somehow
-    if (deltaModule === 0) return null;
-
-    // Add the new event timestamp to deltasTimestamp array, and remove the oldest entry
-    this.deltasTimestamp.push(Date.now());
-    this.deltasTimestamp.shift();
-
-    // Get the relevant deltas array
-    const deltas = this.lastDeltas[scrollDirection];
-
-    deltas.push(deltaModule);
-    deltas.shift();
-
-    // If the array is not filled up yet, we cannot compare averages, so assume the scroll event to be intentional
-    if (deltas[0] == null) return true;
-
-    const prevTimestamp = this.deltasTimestamp.at(-2) as number;
-
-    // If the last mousewheel occurred within the specified delay of the penultimate one, and their values are the same.
-    // We will assume that this is a trackpad with a constant profile
-    if (prevTimestamp + this.delay > Date.now() && deltas[0] === deltas.at(-1)) {
+    // DeltaModule is too small
+    if (getBiggestDeltaModule(event) < this.sensitivity) {
       return false;
     }
 
-    // Check if the new rolling average (based on the last half of the lastDeltas array) is significantly higher than the old rolling average
-    const oldDeltas = deltas.slice(0, this.stability);
-    const newDeltas = deltas.slice(this.stability, this.stability * 2);
+    const isHuman = this.isHuman(event);
 
-    const oldAverage = getAverage(oldDeltas);
-    const newAverage = getAverage(newDeltas);
+    // If event is human, reset previousEvents
+    if (isHuman) {
+      this.previousEvents = [event];
+    }
+    // Don't push event to the previousEvents if it's timestamp is less than last seen event's timestamp
+    else if (event.timeStamp > (this.previousEvents.at(-1)?.timeStamp || 0)) {
+      this.previousEvents.push(event);
+    }
 
-    const newAverageIsHigher = Math.abs(newAverage * (1 + this.tolerance)) > Math.abs(oldAverage);
-    const matchesSensitivity = Math.abs(newAverage) > this.sensitivity;
+    return isHuman;
+  }
 
-    if (newAverageIsHigher && matchesSensitivity) {
+  private isHuman(event: IWheelEvent): boolean {
+    const previousEvent = this.previousEvents.at(-1);
+
+    // No previous event to compare
+    if (!previousEvent) {
       return true;
     }
 
-    // Add more checks here
-    // ...
+    // Enough of time passed from the last event
+    if (event.timeStamp > previousEvent.timeStamp + this.delay) {
+      return true;
+    }
 
+    const biggestDeltaModule = getBiggestDeltaModule(event);
+    const previousBiggestDeltaModule = getBiggestDeltaModule(previousEvent);
+
+    // Biggest delta module is bigger than previous delta module
+    if (biggestDeltaModule > previousBiggestDeltaModule) {
+      return true;
+    }
+
+    // Vectors don't match
+    if (!compareVectors(event, previousEvent)) {
+      return true;
+    }
+
+    // Non-decreasing deltas above 100 are likely human
+    if (biggestDeltaModule >= 100 && biggestDeltaModule === previousBiggestDeltaModule) {
+      return true;
+    }
+
+    const lastKnownHumanEvent = this.previousEvents[0];
+
+    // Non-decreasing deltas of known human event are likely human
+    if (biggestDeltaModule === getBiggestDeltaModule(lastKnownHumanEvent)) {
+      return true;
+    }
+
+    // If speed of delta's change suddenly jumped, it's likely human
+    if (isAnomalyInertia(previousEvent, event, this.inertiaDecay)) {
+      return true;
+    }
+
+    // No human checks passed. It's probably inertia
     return false;
   }
 }
