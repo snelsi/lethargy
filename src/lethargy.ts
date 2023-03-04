@@ -1,5 +1,5 @@
 import { compareVectors, getBiggestDeltaModule, getWheelEvent, isAnomalyInertia } from "./utils";
-import type { IWheelEvent } from "./types";
+import type { IWheelEvent, LethargyConfig } from "./types";
 
 export class Lethargy {
   /** The wheelDelta threshold. If an event has a wheelDelta below this value, it will not register */
@@ -12,7 +12,7 @@ export class Lethargy {
   /** [lastKnownHumanEvent, ...inertiaEvents] */
   private previousEvents: IWheelEvent[];
 
-  constructor({ sensitivity = 20, inertiaDecay = 10, delay = 100 } = {}) {
+  constructor({ sensitivity = 20, inertiaDecay = 10, delay = 100 }: LethargyConfig = {}) {
     this.sensitivity = Math.max(1, sensitivity);
     this.inertiaDecay = Math.max(1, inertiaDecay);
     this.delay = Math.max(1, delay);
@@ -54,6 +54,12 @@ export class Lethargy {
 
     // No previous event to compare
     if (!previousEvent) {
+      return true;
+    }
+
+    // Wtf, event from the past? o_O
+    // Skip all checks
+    if (event.timeStamp < previousEvent.timeStamp) {
       return true;
     }
 

@@ -19,7 +19,7 @@ export const getBiggestDeltaModule = (e: IWheelEvent): number => {
 };
 
 /** Values below treshhold are considered 0 */
-const getSign = (num: number, treshhold = 10) => {
+export const getSign = (num: number, treshhold = 10) => {
   if (Math.abs(num) < treshhold) return 0;
   return Math.sign(num);
 };
@@ -37,14 +37,14 @@ export const compareVectors = (e1: IWheelEvent, e2: IWheelEvent, treshhold = 20)
   });
 };
 
-/** If e2 event is inertia, it's delta will be no more than treshold slower */
-export const isAnomalyInertia = (e1: IWheelEvent, e2: IWheelEvent, treshold = 10) => {
-  const v1 = getDeltas(e1);
-  const v2 = getDeltas(e2);
+/** If e2 event is inertia, it's delta will be no more than threshold slower */
+export const isAnomalyInertia = (e1: IWheelEvent, e2: IWheelEvent, threshold = 10) => {
+  const v1 = getDeltas(e1).map(Math.abs);
+  const v2 = getDeltas(e2).map(Math.abs);
 
-  return v1.some((delta, i) => {
-    const diff = delta - v2[i];
-    const maxDiff = Math.max(10, (delta * treshold) / 100);
-    return diff > maxDiff;
+  return v2.some((delta, i) => {
+    const actualDiff = v1[i] - delta;
+    const believableDiff = Math.max(10, v1[i] * (threshold / 100));
+    return actualDiff > believableDiff;
   });
 };
