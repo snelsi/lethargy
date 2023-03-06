@@ -22,11 +22,11 @@ export class Lethargy {
   }
 
   /** Checks whether the mousewheel event is an intent */
-  public check(e: WheelEvent): boolean | null {
+  public check(e: WheelEvent): boolean {
     const isEvent = e instanceof Event;
 
     // No event provided
-    if (!isEvent) return null;
+    if (!isEvent) throw new Error("No event provided");
 
     const event = getWheelEvent(e);
 
