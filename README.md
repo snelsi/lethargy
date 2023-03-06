@@ -43,9 +43,9 @@ You can customize the sensitivity, delay, and inertia decay parameters to better
 
 ```tsx
 const lethargy = new Lethargy({
-  sensitivity: 20,
+  sensitivity: 2,
   delay: 100,
-  inertiaDecay: 10,
+  inertiaDecay: 20,
 });
 ```
 

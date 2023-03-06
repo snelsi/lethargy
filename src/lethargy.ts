@@ -12,7 +12,7 @@ export class Lethargy {
   /** [lastKnownHumanEvent, ...inertiaEvents] */
   private previousEvents: IWheelEvent[];
 
-  constructor({ sensitivity = 20, inertiaDecay = 10, delay = 100 }: LethargyConfig = {}) {
+  constructor({ sensitivity = 2, inertiaDecay = 20, delay = 100 }: LethargyConfig = {}) {
     this.sensitivity = Math.max(1, sensitivity);
     this.inertiaDecay = Math.max(1, inertiaDecay);
     this.delay = Math.max(1, delay);
