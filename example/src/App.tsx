@@ -1,25 +1,27 @@
-import Indicator, { states } from "./Indicator";
+import { GeistProvider, CssBaseline } from "@geist-ui/core";
+import { Snippet } from "@geist-ui/core";
 import ScrollListener from "./ScrollListener";
-import About from "./About";
+import Footer from "./Footer";
 
 const App = () => (
-  <main>
-    <h1>Lethargy Demo</h1>
-    <p>
-      Each scroll <em>intent</em> should fire only one block of events, regardless of the device -
-      mousewheel or trackpad. Start scrolling!
-    </p>
+  <GeistProvider>
+    <CssBaseline />
+    <main>
+      <h1>⭐️ Lethargy-TS Demo</h1>
+      <p>
+        Use your mouse wheel or a notebook trackpad to scroll the page! Lethargy-ts will distinguish
+        between intentional wheel events and inertial scrolling. 😎
+      </p>
 
-    <div className="indicators">
-      {states.map((state) => (
-        <Indicator state={state} key={state} />
-      ))}
-    </div>
+      <Snippet text="yarn add lethargy-ts" />
 
-    <ScrollListener />
+      <Snippet text="npm i --save lethargy-ts" />
 
-    <About />
-  </main>
+      <ScrollListener />
+
+      <Footer />
+    </main>
+  </GeistProvider>
 );
 
 export default App;

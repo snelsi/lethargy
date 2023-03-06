@@ -8,14 +8,17 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@geist-ui/core": "^2.3.8",
+    "lethargy-ts": "latest",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "lethargy-ts": "latest"
+    "react-resize-detector": "^8.0.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@vitejs/plugin-react": "^3.1.0",
+    "sass": "^1.58.3",
     "typescript": "^4.9.5",
     "vite": "^4.1.4"
   }

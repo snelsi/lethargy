@@ -1,0 +1,158 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Montserrat, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a,
+button {
+  cursor: pointer;
+}
+
+h1 {
+  line-height: calc(2px + 2ex + 2px) !important;
+}
+
+button {
+  appearance: none;
+  border: none;
+  box-shadow: none;
+  background: transparent;
+}
+
+html,
+body,
+#root {
+  min-height: 100vh;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+main {
+  text-align: center;
+  margin: auto;
+  max-width: 400px;
+  width: 92%;
+  padding: 2em 0;
+
+  & > .snippet {
+    margin: 1em 0 !important;
+    width: 100%;
+  }
+}
+
+#graph {
+  margin: 1em 0;
+  position: relative;
+  width: 100%;
+
+  & canvas {
+    border-radius: 16px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    width: 100%;
+
+    transition: 0.3s ease box-shadow;
+
+    &:hover {
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+      box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+    }
+  }
+
+  & > button {
+    cursor: pointer;
+    position: absolute;
+    top: 1em;
+    right: 1em;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    height: 40px;
+    width: 40px;
+    border-radius: 12px;
+    background: grey;
+    color: black;
+
+    transition: 0.3s ease background;
+
+    &:hover,
+    &:focus-visible {
+      background: white;
+    }
+
+    &:active {
+      background: rgba(255, 255, 255, 0.8);
+    }
+  }
+}
+
+.placeholder {
+  background: #fafafa;
+  border-radius: 6px;
+  color: black;
+  padding: 1em 0;
+  & svg {
+    height: 24px;
+    width: 24px;
+  }
+  & p {
+    margin: 0;
+  }
+}
+
+.events-table {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  & > button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    min-height: 42px;
+    width: 100%;
+    border-radius: 6px;
+    background: #fafafa;
+    border: 1px solid #eaeaea;
+    color: black;
+
+    transition: 0.3s ease background;
+
+    &:hover,
+    &:focus-visible {
+      background: #ecebeb;
+    }
+
+    &:active {
+      background: #dfdddd;
+    }
+  }
+}
+
+kbd {
+  border-radius: 6px;
+  background: #f2f2f2;
+  color: black;
+  font-size: 0.9em;
+  font-weight: bold;
+  padding: 0.25em 0.5em;
+}
