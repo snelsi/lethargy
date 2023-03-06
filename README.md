@@ -73,7 +73,7 @@ All parameters are optional:
 
 - `sensitivity` - Specifies the minimum value for `wheelDelta` for it to register as a valid scroll event. Because the tail of the curve has low `wheelDelta` values, this will stop them from registering as valid scroll events.
 
-- `delay` - Threshold for the amount of time between mouse wheel events for them to be deemed separate.
+- `delay` - Threshold for the amount of time between wheel events for them to be deemed separate.
 
 - `inertiaDecay` - Inertia event may be no more than this percent smaller than the previous event.
 
@@ -91,9 +91,9 @@ Scroll plugins such as [smartscroll](https://github.com/d4nyll/smartscroll), [jq
 
 - The vector of the event differs from the previous event.
 
-- The delta of the event is above 100 and it does not decrease.
+- The delta of the event has a high velocity and doesn't decrease.
 
-- The event does not decrease and immediately follows a known human event.
+- The delta of the event doesn't decrease and immediately follows a known human event.
 
 - The speed of the delta's change suddenly jumped.
 

@@ -7,4 +7,5 @@ export interface LethargyConfig {
   sensitivity?: number;
   inertiaDecay?: number;
   delay?: number;
+  highVelocity?: number;
 }
