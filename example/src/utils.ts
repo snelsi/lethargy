@@ -18,7 +18,13 @@ export const useWheelEvents = () => {
       if (e.ctrlKey || e.altKey) return;
 
       setEvents((prev) => {
-        const ev: Event = { deltaX: e.deltaX, deltaY: e.deltaY, deltaZ: e.deltaZ, timeStamp: e.timeStamp, isIntentional };
+        const ev: Event = {
+          deltaX: e.deltaX,
+          deltaY: e.deltaY,
+          deltaZ: e.deltaZ,
+          timeStamp: e.timeStamp,
+          isIntentional,
+        };
         const next = [ev, ...prev];
         while (next.length > 100) next.pop();
         return next;
