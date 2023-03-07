@@ -49,7 +49,7 @@ const lethargy = new Lethargy({
 });
 ```
 
-> 😉 If you find optimizations for the defaults, please share them in this [ticket](https://github.com/snelsi/lethargy-ts/issues/1)!
+> 😉 If you find optimizations for the defaults, please share them in this [discussion](https://github.com/snelsi/lethargy-ts/discussions/2)!
 
 Bind the wheel event and pass the event to `Lethargy`:
 
