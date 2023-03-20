@@ -14,9 +14,9 @@ describe("Lethargy", () => {
       lethargy = new Lethargy(lethargyConfig);
     });
 
-    it("should return null if no event is provided", () => {
-      const result = lethargy.check(null as unknown as WheelEvent);
-      expect(result).toBeNull();
+    it("should throw an error if no event is provided", () => {
+      // @ts-expect-error: Test for nullish input
+      expect(() => lethargy.check(null)).toThrowError();
     });
 
     it.concurrent("handles pause between events", async ({ expect }) => {
