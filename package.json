@@ -1,6 +1,6 @@
 {
   "name": "lethargy-ts",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Distinguish between scroll events initiated by the user, and those by inertial scrolling",
   "repository": "https://github.com/snelsi/lethargy-ts",
   "license": "MIT",
