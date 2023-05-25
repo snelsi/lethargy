@@ -25,3 +25,4 @@ dist-ssr
 
 # Lock fukes
 *.lock
+pnpm-lock.yaml
