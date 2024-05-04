@@ -13,9 +13,11 @@ const App = () => (
         between intentional wheel events and inertial scrolling. 😎
       </p>
 
-      <Snippet text="yarn add lethargy-ts" />
+      <Snippet text="pnpm i lethargy-ts" />
 
       <Snippet text="npm i --save lethargy-ts" />
+
+      <Snippet text="yarn add lethargy-ts" />
 
       <ScrollListener />
 
