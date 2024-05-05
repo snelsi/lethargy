@@ -1,12 +1,15 @@
-import type { Deltas, IWheelEvent } from "./types.js";
+import type { Deltas, IWheelEvent, WheelEventLike } from "./types.js";
 
 /** Converts default WheelEvent to our custom IWheelEvent */
-export const getWheelEvent = (e: WheelEvent): IWheelEvent => ({
-  deltaX: e.deltaX,
-  deltaY: e.deltaY,
-  deltaZ: e.deltaZ,
-  timeStamp: e.timeStamp,
-});
+export const getWheelEvent = (e: WheelEventLike): IWheelEvent => {
+  const event = "nativeEvent" in e ? e.nativeEvent : e;
+  return {
+    deltaX: event.deltaX || 0,
+    deltaY: event.deltaY || 0,
+    deltaZ: event.deltaZ || 0,
+    timeStamp: event.timeStamp,
+  };
+};
 
 /** Returns array of deltas of the wheel event */
 export const getDeltas = (e: IWheelEvent): Deltas => [e.deltaX, e.deltaY, e.deltaZ];

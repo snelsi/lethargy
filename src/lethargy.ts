@@ -1,5 +1,5 @@
 import { compareVectors, getBiggestDeltaModule, getWheelEvent, isAnomalyInertia } from "./utils.js";
-import type { IWheelEvent, LethargyConfig } from "./types.js";
+import type { IWheelEvent, LethargyConfig, WheelEventLike } from "./types.js";
 import { CHECK_RESULT_CODES } from "./codes.js";
 
 export class Lethargy {
@@ -33,11 +33,11 @@ export class Lethargy {
 
   /** Checks whether the wheel event is an intent.
    * Remembers a passed event to compare future events with it */
-  public check(e: WheelEvent): boolean {
-    const isEvent = e instanceof Event;
+  public check(e: WheelEventLike): boolean {
+    const isValidEvent = ("nativeEvent" in e ? e.nativeEvent : e) instanceof Event;
 
-    // No event provided
-    if (!isEvent) throw new Error("No event provided");
+    // Not a valid event
+    if (!isValidEvent) throw new Error(`"${e}" is not a valid event`);
 
     const event = getWheelEvent(e);
 

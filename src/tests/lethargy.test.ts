@@ -1,6 +1,6 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
-import { newWheelEvent, sleep } from "./helpers.js";
+import { newSyntheticWheelEvent, newWheelEvent, sleep } from "./helpers.js";
 import { Lethargy } from "../lethargy.js";
 import type { LethargyConfig } from "../types.js";
 
@@ -17,6 +17,14 @@ describe("Lethargy", () => {
     it("should throw an error if no event is provided", () => {
       // @ts-expect-error: Test for nullish input
       expect(() => lethargy.check(null)).toThrowError();
+      // @ts-expect-error: Test for non-event input
+      expect(() => lethargy.check({})).toThrowError();
+    });
+
+    it.concurrent("handles React's SyntheticWheelEvent", async ({ expect }) => {
+      const syntheticEvent = newSyntheticWheelEvent(80);
+      const r0 = lethargy.check(syntheticEvent);
+      expect(r0).toBe(true);
     });
 
     it.concurrent("handles pause between events", async ({ expect }) => {
