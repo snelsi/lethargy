@@ -1,7 +1,7 @@
 import { Table, Dot } from "@geist-ui/core";
-import { TableColumnRender } from "@geist-ui/core/esm/table";
+import type { TableColumnRender } from "@geist-ui/core/esm/table";
 import { useState } from "react";
-import { Event } from "./utils";
+import type { Event } from "./utils";
 
 const MouseIcon = () => (
   <svg

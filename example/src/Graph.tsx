@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useTheme } from "@geist-ui/core";
 import { useResizeDetector } from "react-resize-detector";
-import { Event } from "./utils";
+import type { Event } from "./utils";
 
 const ResetIcon = () => (
   <svg width="16" height="16" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
