@@ -1,6 +1,6 @@
-import { compareVectors, getBiggestDeltaModule, getWheelEvent, isAnomalyInertia } from "./utils";
-import type { IWheelEvent, LethargyConfig } from "./types";
-import { CHECK_RESULT_CODES } from "./codes";
+import { compareVectors, getBiggestDeltaModule, getWheelEvent, isAnomalyInertia } from "./utils.js";
+import type { IWheelEvent, LethargyConfig } from "./types.js";
+import { CHECK_RESULT_CODES } from "./codes.js";
 
 export class Lethargy {
   /** The wheelDelta threshold. If an event has a wheelDelta below this value, it will not register */

@@ -1,8 +1,8 @@
 import { describe, it, expect, beforeEach } from "vitest";
 
-import { newWheelEvent, sleep } from "./helpers";
-import { Lethargy } from "../lethargy";
-import type { LethargyConfig } from "../types";
+import { newWheelEvent, sleep } from "./helpers.js";
+import { Lethargy } from "../lethargy.js";
+import type { LethargyConfig } from "../types.js";
 
 const lethargyConfig: LethargyConfig = {};
 

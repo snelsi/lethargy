@@ -2,13 +2,13 @@
   "compilerOptions": {
     "rootDir": "src",
     "declaration": true,
-    "declarationDir": "types",
-    "module": "esnext",
-    "target": "es6",
+    "declarationDir": "lib",
+    "module": "node16",
+    "target": "es2022",
     "lib": ["dom", "dom.iterable", "esnext"],
     "sourceMap": true,
     "inlineSources": true,
-    "moduleResolution": "node",
+    "moduleResolution": "node16",
     "strict": true,
     "esModuleInterop": true
   },

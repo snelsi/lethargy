@@ -1,4 +1,4 @@
-import type { Deltas, IWheelEvent } from "./types";
+import type { Deltas, IWheelEvent } from "./types.js";
 
 /** Converts default WheelEvent to our custom IWheelEvent */
 export const getWheelEvent = (e: WheelEvent): IWheelEvent => ({

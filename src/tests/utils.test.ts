@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { newWheelEvent } from "./helpers";
+import { newWheelEvent } from "./helpers.js";
 import {
   getWheelEvent,
   getDeltas,
@@ -8,8 +8,8 @@ import {
   getSign,
   compareVectors,
   isAnomalyInertia,
-} from "../utils";
-import type { IWheelEvent } from "../types";
+} from "../utils.js";
+import type { IWheelEvent } from "../types.js";
 
 describe("newWheelEvent", () => {
   it("accepts number", () => {
