@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@geist-ui/core": "^2.3.8",
-    "lethargy-ts": "0.0.6-beta.0",
+    "lethargy-ts": "0.0.6-beta.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-resize-detector": "^10.0.1"
