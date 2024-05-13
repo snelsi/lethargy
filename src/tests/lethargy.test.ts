@@ -40,16 +40,6 @@ describe("Lethargy", () => {
       expect(r1).toBe(true);
     });
 
-    it("handles the change of the vector", () => {
-      const e0 = newWheelEvent(80);
-      const r0 = lethargy.check(e0);
-      expect(r0).toBe(true);
-
-      const e1 = newWheelEvent(-80);
-      const r1 = lethargy.check(e1);
-      expect(r1).toBe(true);
-    });
-
     it("handles non-decreasing deltas", () => {
       const e0 = newWheelEvent(80);
       const r0 = lethargy.check(e0);
@@ -111,7 +101,7 @@ describe("Lethargy", () => {
       // Delta dropped significantly
       const e5 = newWheelEvent(-30);
       const r5 = lethargy.check(e5);
-      expect(r5).toBe(true);
+      expect(r5).toBe(false);
 
       // Delta dropped again
       const e6 = newWheelEvent(-26);

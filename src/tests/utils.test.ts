@@ -1,14 +1,7 @@
 import { describe, it, expect } from "vitest";
 
 import { newWheelEvent } from "./helpers.js";
-import {
-  getWheelEvent,
-  getDeltas,
-  getBiggestDeltaModule,
-  getSign,
-  compareVectors,
-  isAnomalyInertia,
-} from "../utils.js";
+import { getWheelEvent, getDeltas, getBiggestDeltaModule, getSign } from "../utils.js";
 import type { IWheelEvent } from "../types.js";
 
 describe("newWheelEvent", () => {
@@ -88,103 +81,5 @@ describe("getSign", () => {
   it("returns 0 for numbers below the treshhold", () => {
     const sign = getSign(10, 100);
     expect(sign).toEqual(0);
-  });
-});
-
-describe("compareVectors", () => {
-  it("should return true for identical vectors", () => {
-    const e1: IWheelEvent = {
-      deltaX: 10,
-      deltaY: 20,
-      deltaZ: 30,
-      timeStamp: 1000,
-    };
-
-    const e2: IWheelEvent = {
-      deltaX: 10,
-      deltaY: 20,
-      deltaZ: 30,
-      timeStamp: 2000,
-    };
-
-    const areEqual = compareVectors(e1, e2);
-
-    expect(areEqual).toBe(true);
-  });
-
-  it("should return true for vectors that are equal up to a threshold", () => {
-    const e1: IWheelEvent = {
-      deltaX: 10,
-      deltaY: 20,
-      deltaZ: 30,
-      timeStamp: 1000,
-    };
-    const e2: IWheelEvent = {
-      deltaX: 8,
-      deltaY: 22,
-      deltaZ: 28,
-      timeStamp: 2000,
-    };
-    const treshhold = 20;
-
-    const areEqual = compareVectors(e1, e2, treshhold);
-
-    expect(areEqual).toBe(true);
-  });
-
-  it("should return false for different vectors", () => {
-    const e1: IWheelEvent = {
-      deltaX: 10,
-      deltaY: 20,
-      deltaZ: 30,
-      timeStamp: 1000,
-    };
-    const e2: IWheelEvent = {
-      deltaX: -10,
-      deltaY: -20,
-      deltaZ: 30,
-      timeStamp: 2000,
-    };
-
-    const areEqual = compareVectors(e1, e2);
-
-    expect(areEqual).toBe(false);
-  });
-});
-
-describe("isAnomalyInertia", () => {
-  it("should return false when e2's delta is no more than `threshold` slower", () => {
-    const e1: IWheelEvent = { deltaX: 0, deltaY: 40, deltaZ: 0, timeStamp: 0 };
-    const e2: IWheelEvent = { deltaX: 0, deltaY: 36, deltaZ: 0, timeStamp: 20 };
-    const result = isAnomalyInertia(e1, e2);
-    expect(result).toBe(false);
-  });
-
-  it("should return true when e2's delta is more than `threshold` slower", () => {
-    const e1: IWheelEvent = { deltaX: 0, deltaY: 200, deltaZ: 0, timeStamp: 0 };
-    const e2: IWheelEvent = { deltaX: 0, deltaY: 100, deltaZ: 0, timeStamp: 20 };
-    const result = isAnomalyInertia(e1, e2);
-    expect(result).toBe(true);
-  });
-
-  it("should return false when e2's delta is bigger", () => {
-    const e1: IWheelEvent = { deltaX: 0, deltaY: 200, deltaZ: 0, timeStamp: 0 };
-    const e2: IWheelEvent = { deltaX: 0, deltaY: 300, deltaZ: 0, timeStamp: 20 };
-    const result = isAnomalyInertia(e1, e2);
-    expect(result).toBe(false);
-  });
-
-  it("should return false when e2's delta is bigger", () => {
-    const e1: IWheelEvent = { deltaX: 0, deltaY: -200, deltaZ: 0, timeStamp: 0 };
-    const e2: IWheelEvent = { deltaX: 0, deltaY: -100, deltaZ: 0, timeStamp: 20 };
-    const result = isAnomalyInertia(e1, e2);
-    expect(result).toBe(true);
-  });
-
-  it("handles small values", () => {
-    const e1: IWheelEvent = { deltaX: 0, deltaY: 10, deltaZ: 0, timeStamp: 0 };
-    const e2: IWheelEvent = { deltaX: 0, deltaY: 2, deltaZ: 0, timeStamp: 20 };
-    const result = isAnomalyInertia(e1, e2);
-    expect(result).toBe(false);
   });
 });

@@ -39,13 +39,14 @@ import { Lethargy } from "lethargy-ts";
 const lethargy = new Lethargy();
 ```
 
-You can customize the sensitivity, delay, and inertia decay parameters to better match your application's needs:
+You can customize the sensitivity, delay, and [other parameters](https://github.com/snelsi/lethargy-ts/blob/master/src/types.ts) to better match your application's needs:
 
 ```tsx
 const lethargy = new Lethargy({
   sensitivity: 2,
   delay: 100,
-  inertiaDecay: 20,
+  highVelocity: 100,
+  increasingDeltasThreshold: 3,
 });
 ```
 
@@ -73,9 +74,11 @@ All parameters are optional:
 
 - `sensitivity` - Specifies the minimum value for `wheelDelta` for it to register as a valid scroll event. Because the tail of the curve has low `wheelDelta` values, this will stop them from registering as valid scroll events.
 
-- `delay` - Threshold for the amount of time between wheel events for them to be deemed separate.
+- `delay` - If there was a pause of this amount of milliseconds between two events, the current event is assumed to be user-triggered.
 
-- `inertiaDecay` - Inertia event may be no more than this percent smaller than the previous event.
+- `highVelocity` - Events with high `wheelDelta` usually decay quickly. If `wheelDelta` is above this threshold and doesn't decrease, it's assumed to be user-triggered.
+
+- `increasingDeltasThreshold` - If `wheelDelta` has been increasing for this amount of consecutive events, the current event is assumed to be user-triggered.
 
 ## What problem does it solve?
 
@@ -87,15 +90,11 @@ Scroll plugins such as [smartscroll](https://github.com/d4nyll/smartscroll), [jq
 
 - Enough time has passed between two events.
 
-- The delta of the event is bigger than the delta of the previous event.
-
-- The vector of the event differs from the previous event.
-
-- The delta of the event has a high velocity and doesn't decrease.
-
 - The delta of the event doesn't decrease and immediately follows a known human event.
 
-- The speed of the delta's change suddenly jumped.
+- The delta of the event doesn't decrease and has a high velocity.
+
+- The delta of the event has been increasing for `n` consecutive events.
 
 If any of these checks are true, the event is considered intentional. Otherwise, it is considered to be initiated by inertial scrolling.
 

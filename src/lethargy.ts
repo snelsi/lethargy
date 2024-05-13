@@ -1,31 +1,30 @@
-import { compareVectors, getBiggestDeltaModule, getWheelEvent, isAnomalyInertia } from "./utils.js";
+import { getBiggestDeltaModule, getWheelEvent } from "./utils.js";
 import type { IWheelEvent, LethargyConfig, WheelEventLike } from "./types.js";
 import { CHECK_RESULT_CODES } from "./codes.js";
 
 export class Lethargy {
-  /** The wheelDelta threshold. If an event has a wheelDelta below this value, it will not register */
+  /** The minimum `wheelDelta` value for an event to be registered. Events with a `wheelDelta` below this value are ignored. */
   public sensitivity: number;
-  /** Threshold for the amount of time between wheel events for them to be deemed separate */
+  /** If this time in milliseconds has passed since the last event, the current event is assumed to be user-triggered. */
   public delay: number;
-  /** Max percentage decay speed of an Inertia event */
-  public inertiaDecay: number;
+  /** Events with high `wheelDelta` usually decay quickly. If `wheelDelta` is above this threshold and doesn't decrease, it's assumed to be user-triggered. */
+  public highVelocity: number;
+  /** If delta has been increasing for this amount of consecutive events, the event is considered to be user-triggered. */
+  public increasingDeltasThreshold: number;
 
   /** `[lastKnownHumanEvent, ...inertiaEvents]` */
   private previousEvents: IWheelEvent[];
 
-  /** Deltas above this are considered high velocity */
-  private highVelocity: number;
-
   constructor({
     sensitivity = 2,
-    inertiaDecay = 20,
     delay = 100,
     highVelocity = 100,
+    increasingDeltasThreshold = 3,
   }: LethargyConfig = {}) {
     this.sensitivity = Math.max(1, sensitivity);
-    this.inertiaDecay = Math.max(1, inertiaDecay);
     this.delay = Math.max(1, delay);
     this.highVelocity = Math.max(1, highVelocity);
+    this.increasingDeltasThreshold = Math.max(2, increasingDeltasThreshold);
 
     // Reset inner state
     this.previousEvents = [];
@@ -74,15 +73,17 @@ export class Lethargy {
 
     // Wtf, event from the past? o_O
     // Skip all checks
-    if (event.timeStamp < previousEvent.timeStamp) {
+    const isEventFromThePast = event.timeStamp < previousEvent.timeStamp;
+    if (isEventFromThePast) {
       return {
         isHuman: true,
         reason: CHECK_RESULT_CODES.PAST_TIMESTAMP_EVENT,
       };
     }
 
-    // Enough of time passed from the last event
-    if (event.timeStamp > previousEvent.timeStamp + this.delay) {
+    // Enough time has passed since the last event
+    const isEnoughTimePassed = event.timeStamp > previousEvent.timeStamp + this.delay;
+    if (isEnoughTimePassed) {
       return {
         isHuman: true,
         reason: CHECK_RESULT_CODES.ENOUGH_TIME_PASSED,
@@ -92,52 +93,43 @@ export class Lethargy {
     const biggestDeltaModule = getBiggestDeltaModule(event);
     const previousBiggestDeltaModule = getBiggestDeltaModule(previousEvent);
 
-    // Biggest delta module is bigger than previous delta module
-    if (biggestDeltaModule > previousBiggestDeltaModule) {
-      return {
-        isHuman: true,
-        reason: CHECK_RESULT_CODES.DELTA_MODULE_IS_BIGGER,
-      };
-    }
+    const isDeltaModuleNonDecreasing = biggestDeltaModule >= previousBiggestDeltaModule;
 
-    // Vectors don't match
-    if (!compareVectors(event, previousEvent)) {
-      return {
-        isHuman: true,
-        reason: CHECK_RESULT_CODES.VECTORS_DONT_MATCH,
-      };
-    }
+    if (isDeltaModuleNonDecreasing) {
+      const isPreviousEventHuman = this.previousEvents.length === 1;
 
-    // High velocity non-decreasing deltas are likely human
-    if (
-      biggestDeltaModule >= this.highVelocity &&
-      biggestDeltaModule === previousBiggestDeltaModule
-    ) {
-      return {
-        isHuman: true,
-        reason: CHECK_RESULT_CODES.HIGH_VELOCITY_NON_DECREASING_DELTAS,
-      };
-    }
+      // Previous event is human and the delta is non-decreasing
+      if (isPreviousEventHuman) {
+        return {
+          isHuman: true,
+          reason: CHECK_RESULT_CODES.NON_DECREASING_DELTAS_OF_KNOWN_HUMAN,
+        };
+      }
 
-    const lastKnownHumanEvent = this.previousEvents[0];
+      // High velocity non-decreasing deltas are likely human
+      const isHighVelocity = biggestDeltaModule >= this.highVelocity;
+      if (isHighVelocity) {
+        return {
+          isHuman: true,
+          reason: CHECK_RESULT_CODES.HIGH_VELOCITY_NON_DECREASING_DELTAS,
+        };
+      }
 
-    // Non-decreasing deltas of known human event are likely human
-    if (
-      this.previousEvents.length === 1 &&
-      biggestDeltaModule === getBiggestDeltaModule(lastKnownHumanEvent)
-    ) {
-      return {
-        isHuman: true,
-        reason: CHECK_RESULT_CODES.NON_DECREASING_DELTAS_OF_KNOWN_HUMAN,
-      };
-    }
+      // Delta has been increasing for the last `increasingDeltasThreshold` consecutive events
+      const deltaHasBeenIncreasing =
+        this.increasingDeltasThreshold <= 2 ||
+        (this.previousEvents.length >= this.increasingDeltasThreshold &&
+          this.previousEvents
+            .slice(-this.increasingDeltasThreshold)
+            .map(getBiggestDeltaModule)
+            .every((delta, i, arr) => i === 0 || delta > arr[i - 1]));
 
-    // If speed of delta's change suddenly jumped, it's likely human
-    if (isAnomalyInertia(previousEvent, event, this.inertiaDecay)) {
-      return {
-        isHuman: true,
-        reason: CHECK_RESULT_CODES.ANOMALY_INERTIA_JUMP,
-      };
+      if (deltaHasBeenIncreasing) {
+        return {
+          isHuman: true,
+          reason: CHECK_RESULT_CODES.DELTA_MODULE_HAS_BEEN_INCREASING,
+        };
+      }
     }
 
     // No human checks passed. It's probably inertia
