@@ -108,7 +108,8 @@ export class Lethargy {
 
       // High velocity non-decreasing deltas are likely human
       const isHighVelocity = biggestDeltaModule >= this.highVelocity;
-      if (isHighVelocity) {
+      const isPreviousEventHighVelocity = previousBiggestDeltaModule >= this.highVelocity;
+      if (isHighVelocity && isPreviousEventHighVelocity) {
         return {
           isHuman: true,
           reason: CHECK_RESULT_CODES.HIGH_VELOCITY_NON_DECREASING_DELTAS,
