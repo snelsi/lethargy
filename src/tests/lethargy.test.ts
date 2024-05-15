@@ -108,7 +108,7 @@ describe("Lethargy", () => {
       const r6 = lethargy.check(e6);
       expect(r6).toBe(false);
 
-      // Delta increased 3 consecutive times
+      // Delta increased 4 consecutive times
       const e7 = newWheelEvent(40);
       const r7 = lethargy.check(e7);
       expect(r7).toBe(false);
@@ -119,12 +119,16 @@ describe("Lethargy", () => {
 
       const e9 = newWheelEvent(60);
       const r9 = lethargy.check(e9);
-      expect(r9).toBe(true);
+      expect(r9).toBe(false);
 
-      // Non-decreasing delta above 100
-      const e10 = newWheelEvent(120);
+      const e10 = newWheelEvent(70);
       const r10 = lethargy.check(e10);
       expect(r10).toBe(true);
+
+      // Non-decreasing after known human
+      const e11 = newWheelEvent(120);
+      const r11 = lethargy.check(e11);
+      expect(r11).toBe(true);
     });
   });
 });
