@@ -61,7 +61,7 @@ describe("Lethargy", () => {
 
       // Test "past" event second
       const r0 = lethargy.check(e0);
-      expect(r0).toBe(true);
+      expect(r0).toBe(false);
     });
 
     it("sample scenario", () => {
@@ -108,15 +108,23 @@ describe("Lethargy", () => {
       const r6 = lethargy.check(e6);
       expect(r6).toBe(false);
 
-      // Delta increased
-      const e7 = newWheelEvent(100);
+      // Delta increased 3 consecutive times
+      const e7 = newWheelEvent(40);
       const r7 = lethargy.check(e7);
-      expect(r7).toBe(true);
+      expect(r7).toBe(false);
+
+      const e8 = newWheelEvent(50);
+      const r8 = lethargy.check(e8);
+      expect(r8).toBe(false);
+
+      const e9 = newWheelEvent(60);
+      const r9 = lethargy.check(e9);
+      expect(r9).toBe(true);
 
       // Non-decreasing delta above 100
-      const e8 = newWheelEvent(100);
-      const r8 = lethargy.check(e8);
-      expect(r8).toBe(true);
+      const e10 = newWheelEvent(120);
+      const r10 = lethargy.check(e10);
+      expect(r10).toBe(true);
     });
   });
 });

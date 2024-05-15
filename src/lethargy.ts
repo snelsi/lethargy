@@ -71,12 +71,11 @@ export class Lethargy {
       };
     }
 
-    // Wtf, event from the past? o_O
-    // Skip all checks
+    // Safe-guard against lagged / out-of-order events from the past
     const isEventFromThePast = event.timeStamp < previousEvent.timeStamp;
     if (isEventFromThePast) {
       return {
-        isHuman: true,
+        isHuman: false,
         reason: CHECK_RESULT_CODES.PAST_TIMESTAMP_EVENT,
       };
     }
