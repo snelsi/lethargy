@@ -4,7 +4,11 @@ import { newSyntheticWheelEvent, newWheelEvent, sleep } from "./helpers.js";
 import { Lethargy } from "../lethargy.js";
 import type { LethargyConfig } from "../types.js";
 
-const lethargyConfig: LethargyConfig = {};
+const increasingDeltasThreshold = 3;
+
+const lethargyConfig: LethargyConfig = {
+  increasingDeltasThreshold,
+};
 
 describe("Lethargy", () => {
   describe("check", () => {
@@ -108,22 +112,12 @@ describe("Lethargy", () => {
       const r6 = lethargy.check(e6);
       expect(r6).toBe(false);
 
-      // Delta increased 4 consecutive times
-      const e7 = newWheelEvent(40);
-      const r7 = lethargy.check(e7);
-      expect(r7).toBe(false);
-
-      const e8 = newWheelEvent(50);
-      const r8 = lethargy.check(e8);
-      expect(r8).toBe(false);
-
-      const e9 = newWheelEvent(60);
-      const r9 = lethargy.check(e9);
-      expect(r9).toBe(false);
-
-      const e10 = newWheelEvent(70);
-      const r10 = lethargy.check(e10);
-      expect(r10).toBe(true);
+      // Delta increased n consecutive times
+      for (let i = 1; i <= increasingDeltasThreshold; i++) {
+        const e = newWheelEvent(40 + i * 10);
+        const r = lethargy.check(e);
+        expect(r).toBe(i === increasingDeltasThreshold);
+      }
 
       // Non-decreasing after known human
       const e11 = newWheelEvent(120);
