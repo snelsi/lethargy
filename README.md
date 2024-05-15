@@ -45,7 +45,7 @@ You can customize the sensitivity, delay, and [other parameters](https://github.
 const lethargy = new Lethargy({
   sensitivity: 2,
   delay: 100,
-  increasingDeltasThreshold: 4,
+  increasingDeltasThreshold: 3,
 });
 ```
 

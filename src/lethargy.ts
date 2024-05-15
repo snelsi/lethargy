@@ -16,7 +16,7 @@ export class Lethargy {
   constructor({
     sensitivity = 2,
     delay = 100,
-    increasingDeltasThreshold = 4,
+    increasingDeltasThreshold = 3,
   }: LethargyConfig = {}) {
     this.sensitivity = Math.max(1, sensitivity);
     this.delay = Math.max(1, delay);
