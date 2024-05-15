@@ -7,8 +7,6 @@ export class Lethargy {
   public sensitivity: number;
   /** If this time in milliseconds has passed since the last event, the current event is assumed to be user-triggered. */
   public delay: number;
-  /** Events with high `wheelDelta` usually decay quickly. If `wheelDelta` is above this threshold and doesn't decrease, it's assumed to be user-triggered. */
-  public highVelocity: number;
   /** If delta has been increasing for this amount of consecutive events, the event is considered to be user-triggered. */
   public increasingDeltasThreshold: number;
 
@@ -18,12 +16,10 @@ export class Lethargy {
   constructor({
     sensitivity = 2,
     delay = 100,
-    highVelocity = 100,
-    increasingDeltasThreshold = 3,
+    increasingDeltasThreshold = 4,
   }: LethargyConfig = {}) {
     this.sensitivity = Math.max(1, sensitivity);
     this.delay = Math.max(1, delay);
-    this.highVelocity = Math.max(1, highVelocity);
     this.increasingDeltasThreshold = Math.max(2, increasingDeltasThreshold);
 
     // Reset inner state
@@ -102,16 +98,6 @@ export class Lethargy {
         return {
           isHuman: true,
           reason: CHECK_RESULT_CODES.NON_DECREASING_DELTAS_OF_KNOWN_HUMAN,
-        };
-      }
-
-      // High velocity non-decreasing deltas are likely human
-      const isHighVelocity = biggestDeltaModule >= this.highVelocity;
-      const isPreviousEventHighVelocity = previousBiggestDeltaModule >= this.highVelocity;
-      if (isHighVelocity && isPreviousEventHighVelocity) {
-        return {
-          isHuman: true,
-          reason: CHECK_RESULT_CODES.HIGH_VELOCITY_NON_DECREASING_DELTAS,
         };
       }
 

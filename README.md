@@ -45,8 +45,7 @@ You can customize the sensitivity, delay, and [other parameters](https://github.
 const lethargy = new Lethargy({
   sensitivity: 2,
   delay: 100,
-  highVelocity: 100,
-  increasingDeltasThreshold: 3,
+  increasingDeltasThreshold: 4,
 });
 ```
 
@@ -76,8 +75,6 @@ All parameters are optional:
 
 - `delay` - If there was a pause of this amount of milliseconds between two events, the current event is assumed to be user-triggered.
 
-- `highVelocity` - Events with high `wheelDelta` usually decay quickly. If `wheelDelta` is above this threshold and doesn't decrease, it's assumed to be user-triggered.
-
 - `increasingDeltasThreshold` - If `wheelDelta` has been increasing for this amount of consecutive events, the current event is assumed to be user-triggered.
 
 ## What problem does it solve?
@@ -91,8 +88,6 @@ Scroll plugins such as [smartscroll](https://github.com/d4nyll/smartscroll), [jq
 - Enough time has passed between two events.
 
 - The delta of the event doesn't decrease and immediately follows a known human event.
-
-- The delta of the event doesn't decrease and has a high velocity.
 
 - The delta of the event has been increasing for `n` consecutive events.
 

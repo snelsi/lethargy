@@ -11,8 +11,6 @@ export interface LethargyConfig {
   sensitivity?: number;
   /** If this time in milliseconds has passed since the last event, the current event is assumed to be user-triggered. */
   delay?: number;
-  /** Events with high `wheelDelta` usually decay quickly. If `wheelDelta` is above this threshold and doesn't decrease, it's assumed to be user-triggered. */
-  highVelocity?: number;
   /** If `wheelDelta` has been increasing for this amount of consecutive events, the current event is assumed to be user-triggered. */
   increasingDeltasThreshold?: number;
 }
